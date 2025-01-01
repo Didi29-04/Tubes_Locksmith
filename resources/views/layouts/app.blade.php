@@ -7,12 +7,18 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Leaflet CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Leaflet JS -->
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -31,6 +37,9 @@
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <a href="{{ route('map') }}" class="text-gray-900 hover:text-gray-700 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    Outlet Location
+                                </a>
                                 @auth
                                     <a href="{{ route('outlets.index') }}" class="text-gray-900 hover:text-gray-700 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
                                         Outlet List
@@ -98,6 +107,28 @@
             <!-- Page Content -->
             <main>
                 {{ $slot }}
+
+                <!-- Map Example -->
+                <div id="map" style="height: 500px; width: 100%;"></div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        // Inisialisasi Peta
+                        var map = L.map('map').setView([-8.4095, 115.1889], 10); // Koordinat default Bali
+
+                        // Tambahkan Tile Layer
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        }).addTo(map);
+
+                        // Marker Data
+                        var outlets = {!! json_encode($outlets ?? []) !!}; // Data dari backend
+                        outlets.forEach(function(outlet) {
+                            L.marker([outlet.latitude, outlet.longitude])
+                                .addTo(map)
+                                .bindPopup(<b>${outlet.name}</b><br>${outlet.address});
+                        });
+                    });
+                </script>
             </main>
         </div>
     </body>

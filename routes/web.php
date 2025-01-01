@@ -30,5 +30,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('outlets', OutletController::class);
 });
 
+Route::get('/', function () {
+    $outlets = \App\Models\Outlet::all(); // Ambil data outlet dari database
+    return view('map', compact('outlets'));
+})->name('map');
+
+Route::get('/outlet-location', function () {
+    $outlets = \App\Models\Outlet::all(); // Mengambil data dari database
+    return view('outlet-location', compact('outlets'));
+})->name('map');
 
 require __DIR__.'/auth.php';
