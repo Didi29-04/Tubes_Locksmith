@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OutletController;
+use App\Http\Controllers\LocationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,11 +31,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('outlets', OutletController::class);
 });
 
+
 Route::get('/', function () {
     $outlets = \App\Models\Outlet::all(); // Ambil data outlet dari database
     return view('map', compact('outlets'));
 })->name('map');
 
+// Route untuk halaman Outlet Location
 Route::get('/outlet-location', function () {
     $outlets = \App\Models\Outlet::all(); // Mengambil data dari database
     return view('outlet-location', compact('outlets'));
@@ -44,7 +47,14 @@ Route::get('/', function () {
     return view('welcome'); // Pastikan view welcome.blade.php ada
 })->name('welcome');
 
-// Route untuk Outlet List
-Route::get('/outlets', [OutletController::class, 'index'])->name('outlets.index');
+Route::get('/outlets/{id}', [OutletController::class, 'show'])->name('outlets.show');
+Route::get('/outlets/{id}/edit', [OutletController::class, 'edit'])->name('outlets.edit');
+Route::delete('/outlets/{id}', [OutletController::class, 'destroy'])->name('outlets.destroy');
 
-require __DIR__.'/auth.php';
+
+// Route Detail Location
+// Route::get('/locations/{id}', [LocationController::class, 'show'])->name('locations.show');
+// Route::get('/locations', [LocationController::class, 'index'])->name('locations.index');
+
+Route::get('/', [LocationController::class, 'welcome'])->name('welcome');
+require _DIR_ . '/auth.php';
