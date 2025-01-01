@@ -40,4 +40,11 @@ Route::get('/outlet-location', function () {
     return view('outlet-location', compact('outlets'));
 })->name('map');
 
+Route::get('/', function () {
+    return view('welcome'); // Pastikan view welcome.blade.php ada
+})->name('welcome');
+
+// Route untuk Outlet List
+Route::get('/outlets', [OutletController::class, 'index'])->name('outlets.index');
+
 require __DIR__.'/auth.php';

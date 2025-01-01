@@ -17,7 +17,7 @@
         }).addTo(map);
 
         // Tambahkan Marker dari Data Backend
-        var outlets = {!! json_encode($outlets ?? []) !!}; // Data outlet dari backend
+        var outlets = {!! json_encode($outlets ?? []) !!};
         outlets.forEach(function (outlet) {
             L.marker([outlet.latitude, outlet.longitude])
                 .addTo(map)
