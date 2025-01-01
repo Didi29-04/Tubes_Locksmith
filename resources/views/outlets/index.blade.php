@@ -48,3 +48,53 @@
         </tbody>
     </table>
 </div>
+
+@push('scripts')
+    <script type="module">
+        $(document).ready(function() {
+
+
+            $(".datatable").on("click", ".btn-delete", function (e) {
+                e.preventDefault();
+
+                var form = $(this).closest("form");
+                var name = $(this).data("name");
+
+                Swal.fire({
+                    title: "Are you sure want to delete\n" + name + "?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "bg-primary",
+                    confirmButtonText: "Yes, delete it!",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+
+
+                });
+            });
+        });
+    </script>
+@endpush
+
+{{-- <script>
+    $(document).ready(function() {
+        $('#outletsTable').DataTable({
+            responsive: true,
+            language: {
+                search: "Search:",
+                lengthMenu: "Show MENU entries",
+                info: "Showing START to END of TOTAL entries",
+                paginate: {
+                    first: "First",
+                    last: "Last",
+                    next: "Next",
+                    previous: "Previous"
+                }
+            }
+        });
+    });
+</script> --}}
+@endsection
